@@ -9,7 +9,7 @@ bool Game::init() {
 
 	if (m_background == NULL) return false;
 
-	m_healthbar = GameSurface::load_image("dalek.bmp");
+	m_healthbar = GameSurface::load_image("media/dalek.bmp");
 	if (m_healthbar == NULL) return false;
 
 	return true;
@@ -23,7 +23,7 @@ void Game::modHealth(int i) {
 	if (m_health > 0 && (m_health < MAX_HEALTH || i < 0))
 		m_health += i;
 
-	renderMap("map_01.emp");
+	renderMap("media/maps/map_01.emp");
 
 	if (m_health <= 0) {
 		printf("Oh my god, you self-exterminated!\n");
@@ -49,9 +49,9 @@ void Game::renderMap(char* map) {
 
 	while ((c = fgetc(fp)) != EOF) {
 		if (c == wall) {
-			sprite = GameSurface::load_image("wall.bmp");
+			sprite = GameSurface::load_image("media/wall.bmp");
 		} else if (c == grass) {
-			sprite = GameSurface::load_image("grass.bmp");
+			sprite = GameSurface::load_image("media/grass.bmp");
 		}
 
 		if (sprite != NULL) {
@@ -93,7 +93,7 @@ int Game::start() {
 
 	SDL_Event event;
 
-	renderMap("map_01.emp");
+	renderMap("media/maps/map_01.emp");
 	while (m_running) {
 		while (SDL_PollEvent(&event)) {
 			handle_event(&event);
