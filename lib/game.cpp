@@ -23,8 +23,6 @@ void Game::modHealth(int i) {
 	if (m_health > 0 && (m_health < MAX_HEALTH || i < 0))
 		m_health += i;
 
-	renderMap("media/maps/map_01.emp");
-
 	if (m_health <= 0) {
 		printf("Oh my god, you self-exterminated!\n");
 		doExit();
@@ -39,42 +37,37 @@ void Game::loop() {
 
 }
 
-void Game::renderMap(char* map) {
+void Game::renderMap() {
 	SDL_Surface* sprite = NULL;
 	char wall = '#', grass = '.';
 	int x_pos = 0, y_pos = 0, c;
 	FILE* fp;
 
-	fp = fopen(map, "r");
-
+	fp = fopen(m_currentMap, "r");
 	while ((c = fgetc(fp)) != EOF) {
-		if (c == wall) {
+		if (c == wall)
 			sprite = GameSurface::load_image("media/wall.bmp");
-		} else if (c == grass) {
+		else if (c == grass)
 			sprite = GameSurface::load_image("media/grass.bmp");
-		}
 
-		if (sprite != NULL) {
+		if (sprite != NULL)
 			GameSurface::draw(m_background, sprite, x_pos, y_pos);
-		}
 
-		if (c == '\n') {
-			x_pos = 0;
-		} else {
-			x_pos += TILE_SIZE;
-		}
+		if (c == '\n') x_pos = 0;
+		else x_pos += TILE_SIZE;
 
-		if (x_pos == 0) {
-			y_pos += TILE_SIZE;
-		}
+		if (x_pos == 0) y_pos += TILE_SIZE;
 	}
 }
 
-void Game::render() {
-	// Draw health
+void Game::drawHealth() {
 	for (int i = 0; i < m_health; i++)
 		GameSurface::draw(m_background, m_healthbar, 15 + 50*i, 15);
+}
 
+void Game::render() {
+	renderMap();
+	drawHealth();
 
 	SDL_Flip(m_background);
 }
@@ -93,7 +86,7 @@ int Game::start() {
 
 	SDL_Event event;
 
-	renderMap("media/maps/map_01.emp");
+	m_currentMap = "media/maps/map_01.emp";
 	while (m_running) {
 		while (SDL_PollEvent(&event)) {
 			handle_event(&event);

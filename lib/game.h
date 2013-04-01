@@ -15,6 +15,7 @@ public:
 		m_running = true;
 		m_health = 4;
 		m_healthbar = NULL;
+		m_currentMap = NULL;
 	}
 
 	int start();
@@ -24,14 +25,17 @@ protected:
 	void handle_event(SDL_Event* event);
 	void loop();
 	void render();
-	void renderMap(char* map);
+	void renderMap();
 	void cleanup();
 	void doExit();
 	void modHealth(int amount);
+	void drawHealth();
+	void loadMap(char* map);
 
 private:
 	bool 			m_running;
 	SDL_Surface* 	m_background;
 	SDL_Surface* 	m_healthbar;
 	int 			m_health;
+	char*			m_currentMap;
 };
